@@ -7,32 +7,30 @@ public class Shooting : MonoBehaviour
     [SerializeField] private Camera playerCamera;
     [SerializeField] private float fireRate = 0.2f;
     [SerializeField] private int clipSize = 10;
-    [SerializeField] private float aimSpread = 0.01f; // viewport-space radius for random spread
+    [SerializeField] private float aimSpread = 0.03f; // viewport-space radius for random spread
+    [SerializeField] private float crouchAimSpread = 0.01f;
     private float nextTimeToFire = 0f;
     private int currentAmmo;
     [SerializeField] AnimationClip reloadAnimation;
     [SerializeField] Animator animator;
+    public bool crouching = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         currentAmmo = clipSize;
     }
-    // Update is called once per frame
-    void Update()
+
+    public void TryShoot()
     {
-        if (Input.GetButton("Fire1") && Time.time >= nextTimeToFire && currentAmmo > 0)
+        if (Time.time >= nextTimeToFire && currentAmmo > 0)
         {
             nextTimeToFire = Time.time + fireRate;
             Shoot();
         }
-        // reload on R key
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            StartCoroutine(Reload());
-        }
     }
-    private System.Collections.IEnumerator Reload()
+
+    public System.Collections.IEnumerator Reload()
     {
         Debug.Log("Reloading...");
         animator.Play(reloadAnimation.name);
@@ -48,7 +46,7 @@ public class Shooting : MonoBehaviour
         if (currentAmmo < 0)
             return;
         // get random point in circle
-        Vector2 randomOffset = Random.insideUnitCircle * aimSpread;
+        Vector2 randomOffset = Random.insideUnitCircle * (crouching ? crouchAimSpread : aimSpread);
         Vector3 viewportPoint = new Vector3(0.5f + randomOffset.x, 0.5f + randomOffset.y, 0f);
 
         Ray ray = playerCamera.ViewportPointToRay(viewportPoint);

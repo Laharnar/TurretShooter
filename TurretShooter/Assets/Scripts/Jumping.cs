@@ -13,12 +13,8 @@ public class Jumping : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            rig.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-
-        }
+        rig.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
     }
 }

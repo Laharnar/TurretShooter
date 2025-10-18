@@ -1,5 +1,4 @@
 using UnityEngine;
-
 public class Crouching:MonoBehaviour
 {
     [SerializeField] private GameObject crouchingGo;
@@ -7,6 +6,7 @@ public class Crouching:MonoBehaviour
     internal bool crouching;
     private Transform target;
     [SerializeField] private float lerpSpeed = 0.7f;
+    [SerializeField] private Shooting shooting;
 
     private void Start()
     {
@@ -15,17 +15,16 @@ public class Crouching:MonoBehaviour
 
     private void Update()
     {
-        // crouch with left ctrl
-        if (Input.GetKeyDown(KeyCode.LeftControl))
-        {
-            crouching = !crouching;
-            if (!crouching)
-                target = standingGo.transform;
-            else
-            target = crouchingGo.transform;
-        }
-
         transform.position = Vector3.Lerp(transform.position, target.position, lerpSpeed);
+    }
 
+    public void Crouch()
+    {
+        crouching = !crouching;
+        shooting.crouching = crouching;
+        if (!crouching)
+            target = standingGo.transform;
+        else
+            target = crouchingGo.transform;
     }
 }

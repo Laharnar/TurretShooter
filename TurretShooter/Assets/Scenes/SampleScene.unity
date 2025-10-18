@@ -679,6 +679,7 @@ GameObject:
   - component: {fileID: 1603929814}
   - component: {fileID: 1603929815}
   - component: {fileID: 1603929816}
+  - component: {fileID: 1603929817}
   m_Layer: 0
   m_Name: shooter
   m_TagString: Untagged
@@ -807,8 +808,11 @@ MonoBehaviour:
   playerCamera: {fileID: 330585545}
   fireRate: 0.2
   clipSize: 30
+  aimSpread: 0.13
+  crouchAimSpread: 0.01
   reloadAnimation: {fileID: 7400000, guid: 27448c6047905ca40968275c9f751702, type: 2}
   animator: {fileID: 1603929816}
+  crouching: 0
 --- !u!95 &1603929816
 Animator:
   serializedVersion: 7
@@ -831,6 +835,21 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1603929817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1603929808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0ec5c7ec5242884d80730c07e4fa2df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  crouching: {fileID: 1738391699}
+  jumping: {fileID: 1603929811}
+  shooting: {fileID: 1603929815}
 --- !u!1 &1738391697
 GameObject:
   m_ObjectHideFlags: 0
@@ -877,9 +896,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b6d9bba702016140b8daa30b44521ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crouchingGo: {fileID: 464314900}
-  standingGo: {fileID: 336583363}
+  crouchingGo: {fileID: 336583363}
+  standingGo: {fileID: 464314900}
   lerpSpeed: 0.3
+  shooting: {fileID: 1603929815}
 --- !u!1 &1792107813
 GameObject:
   m_ObjectHideFlags: 0
