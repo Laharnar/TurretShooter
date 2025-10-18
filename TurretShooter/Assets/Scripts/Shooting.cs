@@ -7,6 +7,7 @@ public class Shooting : MonoBehaviour
     [SerializeField] private Camera playerCamera;
     [SerializeField] private float fireRate = 0.2f;
     [SerializeField] private int clipSize = 10;
+    [SerializeField] private float aimSpread = 0.01f; // viewport-space radius for random spread
     private float nextTimeToFire = 0f;
     private int currentAmmo;
     [SerializeField] AnimationClip reloadAnimation;
@@ -42,11 +43,20 @@ public class Shooting : MonoBehaviour
     void Shoot()
     {
         currentAmmo--;
-        Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+
+        // raycast from random point in the middle of the screen
+        if (currentAmmo < 0)
+            return;
+        // get random point in circle
+        Vector2 randomOffset = Random.insideUnitCircle * aimSpread;
+        Vector3 viewportPoint = new Vector3(0.5f + randomOffset.x, 0.5f + randomOffset.y, 0f);
+
+        Ray ray = playerCamera.ViewportPointToRay(viewportPoint);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
         {
             Debug.Log("Hit: " + hit.transform.name);
+            Instantiate(Resources.Load("ImpactEffect"), hit.point, Quaternion.LookRotation(hit.normal));
             hit.transform.SendMessage("TakeDamage", 1, SendMessageOptions.DontRequireReceiver);
         }
     }
